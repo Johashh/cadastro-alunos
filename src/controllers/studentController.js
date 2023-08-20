@@ -5,13 +5,13 @@ const addStudent = async (req, res) => {
 
     try {
         const path = './src/database/students.json';
-        const {nome, email, dataNascimento} = req.body;
-        const studentsString = await readStudentFile(path);
+        const {name, email, birthday} = req.body;
+        const students = await readStudentFile(path);
     
-        const matricula = studentsString.length + 1;
-        studentsString.push({matricula, nome, email, dataNascimento});
+        const registration = students.length + 1;
+        students.push({registration, name, email, birthday});
 
-        await writeStudentFile(studentsString, path);
+        await writeStudentFile(students, path);
     
         return res.status(201).json({message: "Aluno cadastrado"});
     } catch (error) {
@@ -19,31 +19,45 @@ const addStudent = async (req, res) => {
     }
 }
 
-const updateStudentProfileRegisterField = async (req, res) => {
+const updateStudentProfile = async (req, res) => {
     try {
         const path = './src/database/students.json';
-        const {matricula} = req.params;
-        const {nome, email, dataNascimento} = req.body;
-        const studentsString = await readStudentFile(path);
+        const { registration } = req.params;
+        const {name, email, birthday} = req.body;
+        const students = await readStudentFile(path);
         
-        const student = studentsString.find((student) => student.matricula == matricula);
-        const index = studentsString.indexOf(student);       
-
-        student.nome = nome ?? student.nome;   
+        const student = students.find((student) => student.registration == registration);
+        const index = students.indexOf(student);       
+        
+        student.name = name ?? student.name;   
         student.email = email ?? student.email;
-        student.dataNascimento = dataNascimento ?? student.dataNascimento;
+        student.birthday = birthday ?? student.birthday;
         
         console.log(student)
-        studentsString.splice(index, 1, student);
+        students.splice(index, 1, student);
         
-        await writeStudentFile(studentsString, path);
+        await writeStudentFile(students, path);
         return res.status(204).send();
     } catch (error) {
         return res.send(`erro: ${error.message}`);
     } 
 }
 
+const deleteStudent = async (req, res) => {
+    const path = './src/database/students.json';
+    const {registration} = req.params;
+    const students = await readStudentFile(path);
+
+    const student = students.find((student) => student.registration == registration);
+    const index = students.indexOf(student);
+    students.splice(index, 1);
+
+    await writeStudentFile(students, path);
+    res.status(204).send();
+}
+
 module.exports = {
     addStudent,
-    updateStudentProfileRegisterField
+    updateStudentProfile,
+    deleteStudent
 }
