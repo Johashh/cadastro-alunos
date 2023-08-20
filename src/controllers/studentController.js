@@ -24,6 +24,7 @@ const updateStudentProfile = async (req, res) => {
         const { registration } = req.params;
         const {name, email, birthday} = req.body;
         const students = await readStudentFile(path);
+        console.log(students)
         
         const student = students.find((student) => student.registration == registration);
         const index = students.indexOf(student);       

@@ -1,6 +1,6 @@
-const {readStudentFile} = require('../utils/fileReader');
+const { readStudentFile } = require('../utils/fileReader');
 
-const checkStudentData = (req, res, next) => {
+const checkData = (req, res, next) => {
     
     const {name, email, birthday} = req.body;
     
@@ -22,12 +22,12 @@ const checkStudentData = (req, res, next) => {
         return res.status(400).json({message: "É necessário informar a data de nascimento."});
     }
     
-    next();
-    
+    next(); 
 }
 
-const checkRegistration = async (req, res, next) => {
+const checkStudentRegistration = async (req, res, next) => {
     const students = await readStudentFile('./src/database/students.json');
+    console.log(students)
     const {registration} = req.params;
     
     if(!registration){
@@ -46,8 +46,29 @@ const checkRegistration = async (req, res, next) => {
     }
     next();
 }
+const checkTeacherRegistration = async (req, res, next) => {
+    const teachers = await readStudentFile('./src/database/teachers.json');
+    const {registration} = req.params;
+    
+    if(!registration){
+        return res.status(400).json({message: "É necessário informar a matrícula."});
+    } else {
+        const regex = /[^0-9]+/;
+        const validResgistration = teachers.some((teacher) => teacher.registration == registration);
+        
+        if(regex.test(registration)){
+            return res.status(400).json({message: "A matrícula informada é inválida"});            
+        }
+        
+        if(!validResgistration){
+            return res.status(400).json({message: "Não encontramos nenhum professor com a matrícula informada."});            
+        }
+    }
+    next();
+}
 
 module.exports = {
-    checkStudentData, 
-    checkRegistration
+    checkData,
+    checkStudentRegistration,
+    checkTeacherRegistration
 }
