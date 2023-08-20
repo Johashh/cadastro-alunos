@@ -1,10 +1,10 @@
 const fs = require('fs/promises');
 const {readStudentFile, writeStudentFile} = require('../utils/fileReader');
+const path = './src/database/students.json'
 
 const addStudent = async (req, res) => {
 
     try {
-        const path = './src/database/students.json';
         const {name, email, birthday} = req.body;
         const students = await readStudentFile(path);
     
@@ -21,7 +21,6 @@ const addStudent = async (req, res) => {
 
 const updateStudentProfile = async (req, res) => {
     try {
-        const path = './src/database/students.json';
         const { registration } = req.params;
         const {name, email, birthday} = req.body;
         const students = await readStudentFile(path);
@@ -44,7 +43,6 @@ const updateStudentProfile = async (req, res) => {
 }
 
 const deleteStudent = async (req, res) => {
-    const path = './src/database/students.json';
     const {registration} = req.params;
     const students = await readStudentFile(path);
 
@@ -56,8 +54,21 @@ const deleteStudent = async (req, res) => {
     res.status(204).send();
 }
 
+const getStudent = async (req, res) => {
+    const students = await readStudentFile(path);
+
+    try {
+        const { registration } = req.params;
+        const student = students.find((student) => student.registration == registration);
+        return res.status(200).json(student);        
+    } catch (error) {
+        
+    }
+}
+
 module.exports = {
     addStudent,
     updateStudentProfile,
-    deleteStudent
+    deleteStudent,
+    getStudent
 }
