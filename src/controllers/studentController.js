@@ -7,8 +7,8 @@ const addStudent = async (req, res) => {
     try {
         const {name, email, birthday} = req.body;
         const students = await readResourceFile(path);
+        
         let registration = 1;
-
         if(students.length > 0){
             registration = students[students.length - 1].registration + 1;
         }
