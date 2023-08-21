@@ -1,6 +1,6 @@
 const fs = require('fs/promises');
 
-async function readStudentFile(path){
+async function readResourceFile(path){
     
     const studentsBsuffer = await fs.readFile(path);
     const studentsString = JSON.parse(studentsBsuffer);
@@ -8,12 +8,12 @@ async function readStudentFile(path){
     return studentsString;
 }
 
-async function writeStudentFile(arrayJson, path){
+async function writeResourceFile(arrayJson, path){
     const studentStringfy = JSON.stringify(arrayJson);
     await fs.writeFile(path, studentStringfy);
 }
 
 module.exports = {
-    readStudentFile,
-    writeStudentFile
+    readResourceFile,
+    writeResourceFile
 }

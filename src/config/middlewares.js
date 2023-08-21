@@ -1,4 +1,4 @@
-const { readStudentFile } = require('../utils/fileReader');
+const { readResourceFile } = require('../utils/fileReader');
 
 const checkData = (req, res, next) => {
     
@@ -26,7 +26,7 @@ const checkData = (req, res, next) => {
 }
 
 const checkStudentRegistration = async (req, res, next) => {
-    const students = await readStudentFile('./src/database/students.json');
+    const students = await readResourceFile('./src/database/students.json');
     console.log(students)
     const {registration} = req.params;
     
@@ -47,7 +47,7 @@ const checkStudentRegistration = async (req, res, next) => {
     next();
 }
 const checkTeacherRegistration = async (req, res, next) => {
-    const teachers = await readStudentFile('./src/database/teachers.json');
+    const teachers = await readResourceFile('./src/database/teachers.json');
     const {registration} = req.params;
     
     if(!registration){

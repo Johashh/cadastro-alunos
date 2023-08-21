@@ -1,17 +1,21 @@
 const fs = require('fs/promises');
-const {readStudentFile, writeStudentFile} = require('../utils/fileReader');
+const {readResourceFile, writeResourceFile} = require('../utils/fileReader');
 const path = './src/database/students.json'
 
 const addStudent = async (req, res) => {
 
     try {
         const {name, email, birthday} = req.body;
-        const students = await readStudentFile(path);
-    
-        const registration = students.length + 1;
+        const students = await readResourceFile(path);
+        let registration = 1;
+
+        if(students.length > 0){
+            registration = students[students.length - 1].registration + 1;
+        }
+        
         students.push({registration, name, email, birthday});
 
-        await writeStudentFile(students, path);
+        await writeResourceFile(students, path);
     
         return res.status(201).json({message: "Aluno cadastrado"});
     } catch (error) {
@@ -23,7 +27,7 @@ const updateStudentProfile = async (req, res) => {
     try {
         const { registration } = req.params;
         const {name, email, birthday} = req.body;
-        const students = await readStudentFile(path);
+        const students = await readResourceFile(path);
         console.log(students)
         
         const student = students.find((student) => student.registration == registration);
@@ -36,7 +40,7 @@ const updateStudentProfile = async (req, res) => {
         console.log(student)
         students.splice(index, 1, student);
         
-        await writeStudentFile(students, path);
+        await writeResourceFile(students, path);
         return res.status(204).send();
     } catch (error) {
         return res.send(`erro: ${error.message}`);
@@ -45,18 +49,18 @@ const updateStudentProfile = async (req, res) => {
 
 const deleteStudent = async (req, res) => {
     const {registration} = req.params;
-    const students = await readStudentFile(path);
+    const students = await readResourceFile(path);
 
     const student = students.find((student) => student.registration == registration);
     const index = students.indexOf(student);
     students.splice(index, 1);
 
-    await writeStudentFile(students, path);
+    await writeResourceFile(students, path);
     res.status(204).send();
 }
 
 const getStudent = async (req, res) => {
-    const students = await readStudentFile(path);
+    const students = await readResourceFile(path);
 
     try {
         const { registration } = req.params;
