@@ -6,6 +6,6 @@ const classroomController = require('../controllers/classroomController');
 
 router.route('/add').post(checkClassRoomData, classroomController.creatClassRoom);
 router.route('/updateField/:number').patch(checkClassRoomData, classroomController.updateClassroomData);
-router.route('/:number').delete(checkClassroomNumber, classroomController.deleteClassroom);
+router.route('/:number').delete(checkClassroomNumber, classroomController.deleteClassroom).get(checkClassroomNumber, classroomController.getClassroom);
 
 module.exports = router;

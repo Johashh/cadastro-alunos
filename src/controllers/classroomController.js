@@ -64,8 +64,20 @@ const deleteClassroom = async (req, res) => {
     }
 }
 
+const getClassroom = async (req, res) => {
+    const { number } = req.params;
+    const classrooms = await readResourceFile(path);
+    const classroom = classrooms.find((classroom) => classroom.number == number);
+    const index = classrooms.indexOf(classroom);
+
+    if(classroom){
+        res.status(200).json(classroom);
+    }
+}
+
 module.exports = {
     creatClassRoom,
     updateClassroomData,
-    deleteClassroom
+    deleteClassroom,
+    getClassroom
 };
