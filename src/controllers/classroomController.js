@@ -1,19 +1,23 @@
 const { readResourceFile, writeResourceFile } = require('../utils/fileReader');
-const path = './src/database/classrooms.json';
+const pathClassroom = './src/database/classrooms.json';
+const pathTeacher = './src/database/teachers.json';
 
 const creatClassRoom = async (req, res) => {
 
     try {
         const { capacity } = req.body;
-        const classrooms = await readResourceFile(path);
+        const { registration } = req.params;
+        const classrooms = await readResourceFile(pathClassroom);
+        const teachers = await readResourceFile(pathTeacher);
+        const teacher = teachers.find((teacher) => teacher.registration = registration);
 
         let number = 1;
         if(classrooms.length > 0){
             number = classrooms[classrooms.length - 1].number + 1;
         }
 
-        classrooms.push({number, capacity, isAvailable: true, students:[]});
-        await writeResourceFile(classrooms, path);
+        classrooms.push({number, capacity, isAvailable: true, teacher, students:[]});
+        await writeResourceFile(classrooms, pathClassroom);
         res.status(201).json({message: "Sala de aula cadastrada com sucesso"});
         
     } catch (error) {
@@ -26,7 +30,7 @@ const updateClassroomData = async (req, res) => {
     try {
         const { number } = req.params;
         const { capacity } = req.body;
-        const classrooms = await readResourceFile(path);
+        const classrooms = await readResourceFile(pathClassroom);
         const classroom = classrooms.find((classroom) => classroom.number == number);
         const index = classrooms.indexOf(classroom);
     
@@ -35,7 +39,7 @@ const updateClassroomData = async (req, res) => {
         }
 
         classrooms.splice(index, 1, classroom);
-        await writeResourceFile(classrooms, path);
+        await writeResourceFile(classrooms, pathClassroom);
         
         return res.status(204).send();
         
@@ -48,7 +52,7 @@ const deleteClassroom = async (req, res) => {
 
     try {
         const { number } = req.params;
-        const classrooms = await readResourceFile(path);
+        const classrooms = await readResourceFile(pathClassroom);
         const classroom = classrooms.find((classroom) => classroom.number == number);
         const index = classrooms.indexOf(classroom);
 
@@ -56,7 +60,7 @@ const deleteClassroom = async (req, res) => {
             classrooms.splice(index, 1);
         }
 
-        await writeResourceFile(classrooms, path);
+        await writeResourceFile(classrooms, pathClassroom);
         res.status(200).json({message: "Sala deletada"});
         
     } catch (error) {
@@ -66,7 +70,7 @@ const deleteClassroom = async (req, res) => {
 
 const getClassroom = async (req, res) => {
     const { number } = req.params;
-    const classrooms = await readResourceFile(path);
+    const classrooms = await readResourceFile(pathClassroom);
     const classroom = classrooms.find((classroom) => classroom.number == number);
     const index = classrooms.indexOf(classroom);
 
