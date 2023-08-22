@@ -44,7 +44,28 @@ const updateClassroomData = async (req, res) => {
     }
 }
 
+const deleteClassroom = async (req, res) => {
+
+    try {
+        const { number } = req.params;
+        const classrooms = await readResourceFile(path);
+        const classroom = classrooms.find((classroom) => classroom.number == number);
+        const index = classrooms.indexOf(classroom);
+
+        if(classroom){
+            classrooms.splice(index, 1);
+        }
+
+        await writeResourceFile(classrooms, path);
+        res.status(200).json({message: "Sala deletada"});
+        
+    } catch (error) {
+        res.send(`erro: ${error.message}`);
+    }
+}
+
 module.exports = {
     creatClassRoom,
-    updateClassroomData
+    updateClassroomData,
+    deleteClassroom
 };

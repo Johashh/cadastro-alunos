@@ -67,6 +67,29 @@ const checkTeacherRegistration = async (req, res, next) => {
     next();
 }
 
+const checkClassroomNumber = async (req, res, next) => {
+    const classrooms = await readResourceFile('./src/database/classrooms.json');
+    const { number } = req.params;
+    
+    if(!number){
+        return res.status(400).json({message: "É necessário informar a matrícula."});
+    } else {
+        const regex = /[^0-9]+/;
+        const validResgistration = classrooms.some((classroom) => classroom.number == number);
+        
+        if(regex.test(number)){
+            return res.status(400).json({message: "O número informado é inválido"});            
+        }
+        
+        if(!validResgistration){
+            return res.status(400).json({message: "Não encontramos nenhuma sala com número informado."});            
+        }
+    }
+    next();
+}
+
+
+
 const checkClassRoomData = (req, res, next) =>{
     const { capacity } = req.body;
     const regex = /[^0-9]+/;
@@ -83,5 +106,6 @@ module.exports = {
     checkData,
     checkClassRoomData,
     checkStudentRegistration,
-    checkTeacherRegistration
+    checkTeacherRegistration,
+    checkClassroomNumber
 }
