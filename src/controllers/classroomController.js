@@ -7,7 +7,6 @@ const creatClassRoom = async (req, res) => {
         const { capacity } = req.body;
         const classrooms = await readResourceFile(path);
 
-        console.log(typeof(classrooms))
         let number = 1;
         if(classrooms.length > 0){
             number = classrooms[classrooms.length - 1].number + 1;

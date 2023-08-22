@@ -67,8 +67,21 @@ const checkTeacherRegistration = async (req, res, next) => {
     next();
 }
 
+const checkClassRoomData = (req, res, next) =>{
+    const { capacity } = req.body;
+    const regex = /[^0-9]+/;
+
+    if(regex.test(capacity)){
+            return res.status(400).json({message: "A capacidade informada é inválida"});            
+        } else if(Number(capacity) > 30){
+        return res.status(400).json({message: "A capacidade máxima de uma sala é 30"});            
+    }
+    next();
+}
+
 module.exports = {
     checkData,
+    checkClassRoomData,
     checkStudentRegistration,
     checkTeacherRegistration
 }
