@@ -23,6 +23,25 @@ const creatClassRoom = async (req, res) => {
 
 const updateClassroomData = async (req, res) => {
 
+    try {
+        const { number } = req.params;
+        const { capacity } = req.body;
+        const classrooms = await readResourceFile(path);
+        const classroom = classrooms.find((classroom) => classroom.number == number);
+        const index = classrooms.indexOf(classroom);
+    
+        if(classroom){
+            classroom.capacity = capacity ?? classroom.capacity;
+        }
+
+        classrooms.splice(index, 1, classroom);
+        await writeResourceFile(classrooms, path);
+        
+        return res.status(204).send();
+        
+    } catch (error) {
+        res.send(`erro: ${error.message}`);
+    }
 }
 
 module.exports = {
