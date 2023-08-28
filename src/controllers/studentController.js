@@ -7,10 +7,19 @@ const addStudent = async (req, res) => {
     try {
         const {name, email, birthday} = req.body;
         const students = await readResourceFile(path);
+        const validStudent = students.some((student) => student.name === name);
+        const validEmail = students.some((student) => student.email === email);
         
         let registration = 1;
         if(students.length > 0){
             registration = students[students.length - 1].registration + 1;
+        }
+
+        if(validStudent){
+            return res.status(400).json({message: "Já existe um aluno cadastrado com esse nome."});
+        }
+        if(validEmail){
+            return res.status(400).json({message: "Já existe um aluno cadastrado com esse email."});
         }
         
         students.push({registration, name, email, birthday});

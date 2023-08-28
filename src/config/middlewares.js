@@ -1,4 +1,7 @@
 const { readResourceFile } = require('../utils/fileReader');
+const studentPath = './src/database/students.json';
+const teacherPath = './src/database/teachers.json';
+const classroomsPath = './src/database/classrooms.json';
 
 const checkData = (req, res, next) => {
     
@@ -25,9 +28,41 @@ const checkData = (req, res, next) => {
     next(); 
 }
 
+const checkTeacher = async (req, res, next) => {
+
+    const { name, email } = req.body;
+    const teachers = await readResourceFile(teacherPath);
+    const isThereName = teachers.some((teacher) => teacher.name === name);
+    const isThereEmail = teachers.some((teacher) => teacher.email === email);
+    
+    if(isThereName){
+        return res.status(400).json({message: "Já existe um professor cadastrado com esse nome."});
+    }
+    if(isThereEmail){
+        return res.status(400).json({message: "Já existe um professor cadastrado com esse email."});
+    }
+
+    next();
+}
+const checkStudent = async (req, res, next) => {
+
+    const { name, email } = req.body;
+    const students = await readResourceFile(studentPath);
+    const isThereName = students.some((student) => student.name === name);
+    const isThereEmail = students.some((student) => student.email === email);
+    
+    if(isThereName){
+        return res.status(400).json({message: "Já existe um aluno cadastrado com esse nome."});
+    }
+    if(isThereEmail){
+        return res.status(400).json({message: "Já existe um aluno cadastrado com esse email."});
+    }
+
+    next();
+}
+
 const checkStudentRegistration = async (req, res, next) => {
-    const students = await readResourceFile('./src/database/students.json');
-    console.log(students)
+    const students = await readResourceFile(studentPath);
     const {registration} = req.params;
     
     if(!registration){
@@ -48,7 +83,7 @@ const checkStudentRegistration = async (req, res, next) => {
 }
 
 const checkTeacherRegistration = async (req, res, next) => {
-    const teachers = await readResourceFile('./src/database/teachers.json');
+    const teachers = await readResourceFile(teacherPath);
     const {registration} = req.params;
     
     if(!registration){
@@ -69,7 +104,7 @@ const checkTeacherRegistration = async (req, res, next) => {
 }
 
 const checkClassroomNumber = async (req, res, next) => {
-    const classrooms = await readResourceFile('./src/database/classrooms.json');
+    const classrooms = await readResourceFile(classroomsPath);
     const { number } = req.params;
     
     if(!number){
@@ -103,8 +138,8 @@ const checkClassRoomData = (req, res, next) =>{
 
 const checkTeacherAndStudentRegistration = async (req, res, next) => {
         const { teacherRegistration, studentRegistration } = req.body;
-        const teachers = await readResourceFile('./src/database/teachers.json');
-        const students = await readResourceFile('./src/database/students.json');
+        const teachers = await readResourceFile(teacherPath);
+        const students = await readResourceFile(studentPath);
         const regex = /[^0-9]+/;
 
         const validTeacherResgistration = teachers.some((teacher) => teacher.registration == teacherRegistration);
@@ -136,9 +171,11 @@ const checkTeacherAndStudentRegistration = async (req, res, next) => {
 
 module.exports = {
     checkData,
-    checkClassRoomData,
+    checkStudent,
+    checkTeacher,
     checkStudentRegistration,
     checkTeacherRegistration,
     checkClassroomNumber,
+    checkClassRoomData,
     checkTeacherAndStudentRegistration
 }

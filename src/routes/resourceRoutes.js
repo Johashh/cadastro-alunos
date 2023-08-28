@@ -6,5 +6,6 @@ const resourceController = require('../controllers/resourceControler');
 
 router.route('/add').post(checkTeacherAndStudentRegistration ,resourceController.addStudentToClassroom);
 router.route('/delete').delete(checkTeacherAndStudentRegistration ,resourceController.deleteStudenFromClassroom);
+router.route('/get').get(resourceController.getStudentsFromClasroom);
 
 module.exports = router;

@@ -1,1 +1,26 @@
-[{"registration":1,"name":"Rafa","email":"carlos@email.com","birthday":"1980-05-12"},{"registration":2,"name":"Laura","email":"laura@email.com","birthday":"1980-05-12"}]
+[
+  {
+    "registration": 1,
+    "name": "Laura",
+    "email": "laura@email.com",
+    "birthday": "1980-05-12"
+  },
+  {
+    "registration": 2,
+    "name": "Marcos",
+    "email": "Marcos@email.com",
+    "birthday": "1980-05-12"
+  },
+  {
+    "registration": 3,
+    "name": "Andre",
+    "email": "Andre@email.com",
+    "birthday": "1980-05-12"
+  },
+  {
+    "registration": 4,
+    "name": "Matheus",
+    "email": "Matheus@email.com",
+    "birthday": "1980-05-12"
+  }
+]

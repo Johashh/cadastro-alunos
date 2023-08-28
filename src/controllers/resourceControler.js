@@ -46,7 +46,7 @@ const deleteStudenFromClassroom = async (req, res) => {
             const index = students.indexOf(student);
             classroom.students.splice(index, 1);
 
-            await writeResourceFile(students, classroomsPath);
+            await writeResourceFile(classrooms, classroomsPath);
             return res.status(200).json({message: "Aluno removido."});
         }
     } catch (error) {
@@ -55,7 +55,30 @@ const deleteStudenFromClassroom = async (req, res) => {
 
 }
 
+const getStudentsFromClasroom = async (req, res) => {
+
+    try {
+        const { teacherRegistration } = req.body;
+        const classrooms = await readResourceFile(classroomsPath);
+        const classroom = classrooms.find((classroom) => Number(classroom.teacher.registration) === teacherRegistration);
+
+        if(classroom){
+            const students = classroom.students;
+            return res.status(200).json(students);
+        }
+
+    } catch (error) {
+        return res.send(`erro: ${error.message}`);
+    }
+}
+
+const getClassroomsForstudent = async (res, send) => {
+
+}
+
 module.exports = { 
     addStudentToClassroom,
-    deleteStudenFromClassroom
+    deleteStudenFromClassroom,
+    getStudentsFromClasroom,
+    getClassroomsForstudent
 }
