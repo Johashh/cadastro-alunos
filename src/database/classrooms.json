@@ -9,19 +9,56 @@
       "email": "carlos@email.com",
       "birthday": "1980-05-12"
     },
+    "students": []
+  },
+  {
+    "number": 2,
+    "capacity": 5,
+    "isAvailable": true,
+    "teacher": {
+      "registration": "1",
+      "name": "Magno",
+      "email": "carlos@email.com",
+      "birthday": "1980-05-12"
+    },
     "students": [
       {
-        "registration": 2,
-        "name": "Laura",
-        "email": "laura@email.com",
-        "birthday": "1980-05-12"
-      },
-      {
-        "registration": 1,
-        "name": "Laura",
-        "email": "laura@email.com",
+        "registration": 3,
+        "name": "Andre",
+        "email": "Andre@email.com",
         "birthday": "1980-05-12"
       }
     ]
+  },
+  {
+    "number": 3,
+    "capacity": 10,
+    "isAvailable": true,
+    "teacher": {
+      "registration": "1",
+      "name": "Magno",
+      "email": "carlos@email.com",
+      "birthday": "1980-05-12"
+    },
+    "students": [
+      {
+        "registration": 3,
+        "name": "Andre",
+        "email": "Andre@email.com",
+        "birthday": "1980-05-12"
+      }
+    ]
+  },
+  {
+    "number": 4,
+    "capacity": 15,
+    "isAvailable": true,
+    "teacher": {
+      "registration": "2",
+      "name": "Magno",
+      "email": "carlos@email.com",
+      "birthday": "1980-05-12"
+    },
+    "students": []
   }
 ]

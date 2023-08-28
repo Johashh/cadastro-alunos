@@ -4,5 +4,11 @@
     "name": "Magno",
     "email": "carlos@email.com",
     "birthday": "1980-05-12"
+  },
+  {
+    "registration": 2,
+    "name": "Victor",
+    "email": "Victor@email.com",
+    "birthday": "1980-05-12"
   }
 ]
