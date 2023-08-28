@@ -101,9 +101,14 @@ const checkClassRoomData = (req, res, next) =>{
     next();
 }
 
-const checkTeacherAndStudentRegistration = (req, res, next) => {
+const checkTeacherAndStudentRegistration = async (req, res, next) => {
         const { teacherRegistration, studentRegistration } = req.body;
+        const teachers = await readResourceFile('./src/database/teachers.json');
+        const students = await readResourceFile('./src/database/students.json');
         const regex = /[^0-9]+/;
+
+        const validTeacherResgistration = teachers.some((teacher) => teacher.registration == teacherRegistration);
+        const validStudentResgistration = students.some((student) => student.registration == studentRegistration);
 
         if(!teacherRegistration){
             return res.status(400).json({message: "A matrícula do professor deve ser informada"});  
@@ -118,6 +123,15 @@ const checkTeacherAndStudentRegistration = (req, res, next) => {
         if(regex.test(studentRegistration)){
             return res.status(400).json({message: "A matrícula do aluno informada é inválida"});            
         }
+
+        if(!validTeacherResgistration){
+            return res.status(400).json({message: "Não encontramos nenhuma sala registrada com matrícula do professor informado."});            
+        }
+        if(!validStudentResgistration){
+            return res.status(400).json({message: "Não encontramos nenhum aluno com a matrícula informada."});            
+        }
+
+        next();
 }
 
 module.exports = {

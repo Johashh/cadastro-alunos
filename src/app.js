@@ -3,7 +3,7 @@ const app = express();
 const studentRouter = require('./routes/studentRoutes');
 const teacherRouter = require('./routes/teacherRoutes');
 const classroomRouter = require('./routes/classroomRoutes');
-const resourceRouter = require('./routes/resource');
+const resourceRouter = require('./routes/resourceRoutes');
 
 
 app.use(express.json());

@@ -7,28 +7,16 @@ const addStudentToClassroom = async (req, res) => {
 
     try {
         const { teacherRegistration, studentRegistration } = req.body;
-        const teachers = await readResourceFile(teacherPath);
         const students = await readResourceFile(studentPath);
         const classrooms = await readResourceFile(classroomsPath);
-
-        const validTeacherResgistration = teachers.some((teacher) => teacher.registration == teacherRegistration);
-        const validStudentResgistration = students.some((student) => student.registration == studentRegistration);
+ 
         const student = students.find((student) => student.registration === Number(studentRegistration));
-        const classroom = classrooms.find((classroom) =>  classroom.teacher.registration === teacherRegistration);
-
+        const classroom = classrooms.find((classroom) => Number(classroom.teacher.registration) === teacherRegistration);
         let isThereStudent;
+
         if(classroom){
             isThereStudent = classroom.students.some((student) => student.registration === Number(studentRegistration));
-        }      
-        
-        if(!validTeacherResgistration){
-            return res.status(400).json({message: "Não encontramos nenhuma sala registrada com matrícula do professor informado."});            
-        }
-        if(!validStudentResgistration){
-            return res.status(400).json({message: "Não encontramos nenhum aluno com a matrícula informada."});            
-        }
 
-        if(classrooms.some((classroom) => classroom.teacher.registration == teacherRegistration)){
             if(isThereStudent){
                 res.status(400).json({message: "Já existe um estudante cadastrado com essa matrícula."});
             } else {
@@ -36,7 +24,7 @@ const addStudentToClassroom = async (req, res) => {
                 await writeResourceFile(classrooms, classroomsPath);
                 return res.status(201).json({message: "Aluno adicionado."});
             }
-        }
+        }      
       
     } catch (error) {
         return res.send(`erro: ${error.message}`);
@@ -45,6 +33,25 @@ const addStudentToClassroom = async (req, res) => {
 }
 
 const deleteStudenFromClassroom = async (req, res) => {
+
+    try {
+        const { teacherRegistration, studentRegistration } = req.body;
+        const students = await readResourceFile(studentPath);
+        const classrooms = await readResourceFile(classroomsPath);
+ 
+        const student = students.find((student) => student.registration === Number(studentRegistration));
+        const classroom = classrooms.find((classroom) => Number(classroom.teacher.registration) === teacherRegistration);
+
+        if(classroom){
+            const index = students.indexOf(student);
+            classroom.students.splice(index, 1);
+
+            await writeResourceFile(students, classroomsPath);
+            return res.status(200).json({message: "Aluno removido."});
+        }
+    } catch (error) {
+        return res.send(`erro: ${error.message}`);
+    }
 
 }
 
