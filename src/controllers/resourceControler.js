@@ -115,11 +115,47 @@ const getStudentsFromClasroom = async (req, res) => {
   }
 };
 
-const getClassroomsForstudent = async (res, send) => {};
+const getClassroomsOfStudent = async (req, res) => {
+  try {
+    const { studentRegistration } = req.body;
+    const students = await readResourceFile(studentPath);
+    const classrooms = await readResourceFile(classroomsPath);
+    const student = students.find(
+      (student) => student.registration === studentRegistration
+    );
+
+    if (!student) {
+      return res.status(400).json({
+        message: "Não há alunos no registro com a matrícula informada.",
+      });
+    }
+
+    const classroomsOfStudent = {
+      name: student.name,
+      clasroom: [],
+    };
+
+    for (const classroom of classrooms) {
+      if (
+        classroom.students.some(
+          (student) => student.registration === studentRegistration
+        )
+      ) {
+        let teacher = classroom.teacher.name;
+        let number = classroom.number;
+        classroomsOfStudent.clasroom.push({ teacher, number });
+      }
+    }
+
+    return res.status(200).json(classroomsOfStudent);
+  } catch (error) {
+    return res.send(`erro: ${error.message}`);
+  }
+};
 
 module.exports = {
   addStudentToClassroom,
   deleteStudenFromClassroom,
   getStudentsFromClasroom,
-  getClassroomsForstudent,
+  getClassroomsOfStudent,
 };
