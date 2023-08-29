@@ -1,4 +1,3 @@
-const fs = require("fs/promises");
 const { readResourceFile, writeResourceFile } = require("../utils/fileReader");
 const path = "./src/database/students.json";
 

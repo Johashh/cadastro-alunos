@@ -5,20 +5,19 @@ const { checkTeacherAndStudentRegistration } = require("../config/middlewares");
 const resourceController = require("../controllers/resourceControler");
 
 router
-  .route("/add")
+  .route("/")
   .post(
     checkTeacherAndStudentRegistration,
     resourceController.addStudentToClassroom
-  );
-router
-  .route("/delete")
+  )
+  .get(resourceController.getStudentsFromClasroom)
   .delete(
     checkTeacherAndStudentRegistration,
     resourceController.deleteStudenFromClassroom
   );
-router.route("/get").get(resourceController.getStudentsFromClasroom);
+
 router
-  .route("/getClassroomOfStudent")
+  .route("/:studentRegistration")
   .get(resourceController.getClassroomsOfStudent);
 
 module.exports = router;

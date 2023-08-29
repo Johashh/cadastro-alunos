@@ -117,11 +117,11 @@ const getStudentsFromClasroom = async (req, res) => {
 
 const getClassroomsOfStudent = async (req, res) => {
   try {
-    const { studentRegistration } = req.body;
+    const { studentRegistration } = req.params;
     const students = await readResourceFile(studentPath);
     const classrooms = await readResourceFile(classroomsPath);
     const student = students.find(
-      (student) => student.registration === studentRegistration
+      (student) => student.registration === Number(studentRegistration)
     );
 
     if (!student) {
@@ -136,11 +136,10 @@ const getClassroomsOfStudent = async (req, res) => {
     };
 
     for (const classroom of classrooms) {
-      if (
-        classroom.students.some(
-          (student) => student.registration === studentRegistration
-        )
-      ) {
+      const validStudent = classroom.students.some((student) => {
+        return student.registration === Number(studentRegistration);
+      });
+      if (validStudent) {
         let teacher = classroom.teacher.name;
         let number = classroom.number;
         classroomsOfStudent.clasroom.push({ teacher, number });

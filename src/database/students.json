@@ -22,5 +22,11 @@
     "name": "Matheus",
     "email": "Matheus@email.com",
     "birthday": "1980-05-12"
+  },
+  {
+    "registration": 5,
+    "name": "Rafael",
+    "email": "Rafael@email.com",
+    "birthday": "1980-05-12"
   }
 ]

@@ -1,19 +1,18 @@
-const fs = require('fs/promises');
+const fs = require("fs/promises");
 
-async function readResourceFile(path){
-    
-    const studentsBsuffer = await fs.readFile(path);
-    const studentsString = JSON.parse(studentsBsuffer);
+async function readResourceFile(path) {
+  const arrayBuffer = await fs.readFile(path);
+  const arrayString = JSON.parse(arrayBuffer);
 
-    return studentsString;
+  return arrayString;
 }
 
-async function writeResourceFile(arrayJson, path){
-    const studentStringfy = JSON.stringify(arrayJson);
-    await fs.writeFile(path, studentStringfy);
+async function writeResourceFile(arrayJson, path) {
+  const arrayStringfy = JSON.stringify(arrayJson);
+  await fs.writeFile(path, arrayStringfy);
 }
 
 module.exports = {
-    readResourceFile,
-    writeResourceFile
-}
+  readResourceFile,
+  writeResourceFile,
+};

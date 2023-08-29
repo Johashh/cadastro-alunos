@@ -8,19 +8,15 @@ const {
 } = require("../config/middlewares");
 const teacherController = require("../controllers/teacherController");
 
+router.route("/").post(checkData, checkTeacher, teacherController.addTeacher);
 router
-  .route("/add")
-  .post(checkData, checkTeacher, teacherController.addTeacher);
-router
-  .route("/updateField/:registration")
+  .route("/:registration")
+  .delete(checkTeacherRegistration, teacherController.deleteTeacher)
+  .get(checkTeacherRegistration, teacherController.getTeacher)
   .patch(
     checkTeacherRegistration,
     checkTeacher,
     teacherController.updateTeacherProfile
   );
-router
-  .route("/:registration")
-  .delete(checkTeacherRegistration, teacherController.deleteTeacher)
-  .get(checkTeacherRegistration, teacherController.getTeacher);
 
 module.exports = router;
